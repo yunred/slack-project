@@ -1,19 +1,15 @@
 import React, { useCallback, useState } from 'react';
 import { Button, Error, Form, Header, Input, Label, LinkContainer, Success } from '@pages/SignUp/styles';
+import useInput from '@hooks/useInput';
+import axios from 'axios';
 
 const SignUp = () => {
-  const [email, setEmail] = useState('');
-  const [nickname, setNickname] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordCheck, setPasswordCheck] = useState('');
+  const [email, onChangeEmail, setEmail] = useInput('');
+  const [nickname, onChangeNickname, setNickname] = useInput('');
+  const [password, _1, setPassword] = useInput('');
+  const [passwordCheck, _2, setPasswordCheck] = useInput('');
   const [mismatchError, setMismatchError] = useState(false);
 
-  const onChangeEmail = useCallback((e) => {
-    setEmail(e.target.value);
-  }, []);
-  const onChangeNickname = useCallback((e) => {
-    setNickname(e.target.value);
-  }, []);
   const onChangePassword = useCallback(
     (e) => {
       setPassword(e.target.value);
@@ -28,12 +24,15 @@ const SignUp = () => {
     },
     [password],
   );
-  const onSubmit = useCallback((e) => {
-    e.preventDefault();
-    if (!mismatchError) {
-      console.log('서버로 회원가입하기');
-    }
-  }, []);
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (!mismatchError && nickname) {
+        console.log('서버로 회원가입하기');
+      }
+    },
+    [email, nickname, password, passwordCheck, mismatchError],
+  );
   return (
     <div id="container">
       <Header>Sleact</Header>
