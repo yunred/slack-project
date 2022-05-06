@@ -25,7 +25,7 @@ const LogIn = () => {
           },
         )
         .then((response) => {
-          revalidate(); //로그인 직후 다시  data받아옴
+          mutate(response.data, false);
         })
         .catch((error) => {
           setLogInError(error.response?.data?.statusCode === 401);
